@@ -107,4 +107,7 @@ router → handler → service → repository → model
 - `scripts/new_feature.sh <feature>`：按模板生成 `features/<feature>/` 全套文件与迁移 SQL 骨架。
 - `scripts/check.sh`：串行执行 fmt / clippy / test 的提交前自检。
 
-项目根目录下的 `scripts/dev.sh` 提供热重载；`.cargo/config.toml` 中的别名 `cargo dev` 是其快捷方式。用法与排障见 `references/dev-workflow.md`。
+项目根目录下的脚本：
+
+- `scripts/dev.sh`：热重载；`.cargo/config.toml` 中的别名 `cargo dev` 是其快捷方式，用法与排障见 `references/dev-workflow.md`
+- `scripts/openapi.sh [path]`：生成 OpenAPI 文档文件，默认写入 `openapi.json`

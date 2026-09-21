@@ -31,7 +31,8 @@ dotenvy = "0.15"
 thiserror = "2"
 
 utoipa = { version = "5", features = ["chrono", "uuid"] }
-utoipa-swagger-ui = { version = "9", features = ["axum"] }
+# vendored 必须开启：否则构建时会从 GitHub 下载 swagger-ui 静态资源，离线环境会失败
+utoipa-swagger-ui = { version = "9", features = ["axum", "vendored"] }
 
 [dev-dependencies]
 axum-test = "17"
@@ -39,6 +40,17 @@ serial_test = "3"
 ```
 
 > `sqlx` 启用 `macros` 后编译需 `DATABASE_URL` 或 `.sqlx` 离线缓存；CI 前执行 `cargo sqlx prepare`。
+
+项目同时存在 `src/main.rs` 与 `src/bin/openapi.rs`（文档导出）等多个 bin，必须在 `Cargo.toml` 中声明默认入口，否则 `cargo run` 与热重载的 `cargo watch -x run` 都会报 “could not determine which binary to run”：
+
+```toml
+[package]
+default-run = "my-axum-app"
+
+[lib]
+name = "my_axum_app"
+path = "src/lib.rs"
+```
 
 ## main.rs：只做四件事
 

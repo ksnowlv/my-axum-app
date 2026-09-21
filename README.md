@@ -44,8 +44,31 @@ LOG_JSON=1 RUST_LOG=info cargo run
 
 | 方法 | 路径 | 说明 |
 | --- | --- | --- |
-| GET | `/` | 示例接口 |
+| GET | `/` | 示例接口，返回统一包装 `{ code, message, data }` |
 | GET | `/health` | 健康检查 |
+
+## API 文档
+
+文档由 `utoipa` 从代码注解自动生成（OpenAPI 3.1）。
+
+在线访问（服务启动后）：
+
+- Swagger UI：<http://127.0.0.1:3000/swagger-ui/>
+- OpenAPI JSON：<http://127.0.0.1:3000/api-docs/openapi.json>
+
+导出为文件（CI / 分享用）：
+
+```bash
+bash scripts/openapi.sh                 # 生成 openapi.json
+bash scripts/openapi.sh docs/api.json   # 指定路径
+cargo run --bin openapi > openapi.json  # 等价写法
+```
+
+新增接口后需要同步三处，否则不会出现在文档中：
+
+1. handler 上添加 `#[utoipa::path(...)]`
+2. 在 `src/docs.rs` 的 `paths(...)` 中注册该 handler
+3. 在 `components(schemas(...))` 中注册请求/响应结构体
 
 ## 开发约定
 

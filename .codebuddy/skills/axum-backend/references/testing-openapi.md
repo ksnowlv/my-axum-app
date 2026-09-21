@@ -69,7 +69,17 @@ async fn duplicate_email_returns_409() { /* ... */ }
 
 ## OpenAPI（utoipa）
 
-依赖：`utoipa`（derive）、`utoipa-swagger-ui`（axum feature）。
+依赖：`utoipa`、`utoipa-swagger-ui`（`axum` + `vendored` feature）。
+
+```toml
+utoipa = "5"
+# vendored: 内置 Swagger UI 静态资源。
+# 不加该 feature 时，构建脚本会去 GitHub 下载 swagger-ui 压缩包，
+# 在无法访问 github.com 的环境（离线/CI 内网）会直接构建失败。
+utoipa-swagger-ui = { version = "9", features = ["axum", "vendored"] }
+```
+
+其他可用方案（均需外网）：`SWAGGER_UI_DOWNLOAD_URL` 指定镜像 URL 或 `file://` 本地压缩包；`SWAGGER_UI_OVERWRITE_FOLDER` 覆盖部分静态资源。
 
 ```rust
 // src/docs.rs
@@ -108,6 +118,28 @@ Handler 标注：
 )]
 pub async fn list(/* ... */) -> AppResult<ApiResponse<Page<User>>> { /* ... */ }
 ```
+
+## 导出文档文件
+
+`src/bin/openapi.rs` 把文档打印到标准输出，便于 CI 产出产物或分享：
+
+```rust
+use utoipa::OpenApi;
+use my_axum_app::docs::ApiDoc;
+
+fn main() {
+    match ApiDoc::openapi().to_pretty_json() {
+        Ok(json) => println!("{json}"),
+        Err(e) => { eprintln!("生成 OpenAPI 文档失败: {e}"); std::process::exit(1); }
+    }
+}
+```
+
+```bash
+cargo run --bin openapi > openapi.json   # 或 bash scripts/openapi.sh
+```
+
+生成的 `openapi.json` 是产物，已加入 `.gitignore`。
 
 要点：
 

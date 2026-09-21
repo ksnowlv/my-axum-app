@@ -3,8 +3,9 @@
 # 用法: bash .codebuddy/skills/axum-backend/scripts/check.sh
 set -euo pipefail
 
+# scripts/ -> axum-backend/ -> skills/ -> .codebuddy/ -> 项目根
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 cd "$ROOT"
 
 echo "== cargo fmt =="

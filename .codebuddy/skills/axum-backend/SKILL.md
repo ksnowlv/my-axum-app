@@ -89,6 +89,10 @@ router → handler → service → repository → model
 8. 在 `tests/<feature>.rs` 补集成测试。
 9. 运行 `bash .codebuddy/skills/axum-backend/scripts/check.sh` 自检。
 
+## 参考实现
+
+`src/features/user/` 是本规范的完整范例（注册 / 登录 / 查询 / 更新，含密码哈希、JWT 鉴权、SQL、utoipa 注解）。新增业务域前先照读这一套文件，再执行下面的流程。
+
 ## 硬性约定（每次改动都必须满足）
 
 - 错误处理：业务错误统一返回 `AppError`；禁止在 `handler` 中出现 `unwrap()` / `expect()` / `panic!`。

@@ -1,0 +1,66 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE users SET\n               nickname   = COALESCE($2, nickname),\n               avatar_url = COALESCE($3, avatar_url),\n               updated_at = now()\n           WHERE id = $1\n           RETURNING id, email, password_hash, nickname, avatar_url, status, created_at, updated_at",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "email",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "password_hash",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "nickname",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 4,
+        "name": "avatar_url",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 5,
+        "name": "status",
+        "type_info": "Int2"
+      },
+      {
+        "ordinal": 6,
+        "name": "created_at",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 7,
+        "name": "updated_at",
+        "type_info": "Timestamptz"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "45d8252ae853af3f0ba421aed97714cf640896a039c37d657835eeae46280975"
+}

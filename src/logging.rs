@@ -1,21 +1,19 @@
 //! 全局日志初始化：tracing + tracing-subscriber
 //!
-//! - 级别：`RUST_LOG` 环境变量优先，未设置时回落到 `DEFAULT_FILTER`
-//! - 格式：`LOG_JSON=1|true` 输出 JSON（生产/采集），否则输出可读格式（本地开发）
+//! - 级别：`RUST_LOG` 优先，未设置时使用传入的默认级别
+//! - 格式：`LOG_JSON=1|true` 输出 JSON（生产/采集），否则输出可读格式
 
 use tracing_subscriber::{EnvFilter, fmt};
 
-/// `RUST_LOG` 未设置时的默认过滤规则
-/// 例：`RUST_LOG=debug,sqlx=warn,my_axum_app=trace`
-const DEFAULT_FILTER: &str = "info,tower_http=debug";
+/// 附加过滤规则：框架日志比业务日志更吵，单独降噪。
+/// 注意 `sqlx_postgres` 与 `sqlx` 是两个不同的 target，需分别指定。
+const EXTRA_DIRECTIVES: &str = "tower_http=debug,sqlx=warn,sqlx_postgres=warn";
 
-pub fn init() {
-    let filter =
-        EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new(DEFAULT_FILTER));
-
-    let json = std::env::var("LOG_JSON")
-        .map(|v| v == "1" || v.eq_ignore_ascii_case("true"))
-        .unwrap_or(false);
+pub fn init(level: &str, json: bool) {
+    // 环境变量优先，但降噪规则始终追加在后：
+    // EnvFilter 中 target 更具体的指令优先级更高，因此 sqlx=warn 不会被 RUST_LOG=debug 覆盖
+    let base = std::env::var("RUST_LOG").unwrap_or_else(|_| level.to_owned());
+    let filter = EnvFilter::new(format!("{base},{EXTRA_DIRECTIVES}"));
 
     if json {
         fmt()

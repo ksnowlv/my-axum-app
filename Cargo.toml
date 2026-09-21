@@ -19,7 +19,26 @@ tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-utoipa = "5"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+validator = { version = "0.19", features = ["derive"] }
+thiserror = "2"
+anyhow = "1"
+dotenvy = "0.15"
+
+sqlx = { version = "0.8", features = [
+    "postgres",
+    "runtime-tokio-rustls",
+    "chrono",
+    "uuid",
+    "migrate",
+    "macros",
+] }
+
+argon2 = "0.5"
+jsonwebtoken = "9"
+
+utoipa = { version = "5", features = ["chrono", "uuid"] }
 # vendored: 内置 Swagger UI 静态资源，避免构建时从 GitHub 下载
 utoipa-swagger-ui = { version = "9", features = ["axum", "vendored"] }
 

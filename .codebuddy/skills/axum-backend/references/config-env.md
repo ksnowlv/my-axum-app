@@ -1,5 +1,8 @@
 # 配置与环境变量
 
+> 当前落地状态：项目使用 `dotenvy` + 环境变量（`src/config.rs`），未引入 `config` crate 与 `config/*.toml`。
+> 下方为完整方案，接入数据库分环境配置时再迁移；在此之前新增配置项按现有 `Settings` 的写法加到 `config.rs`，并同步 `.env.example` 与 README 的配置表。
+
 ## 目录与加载顺序
 
 ```text

@@ -11,9 +11,10 @@ if ! [[ "$FEATURE" =~ ^[a-z][a-z0-9]*(_[a-z0-9]+)*$ ]]; then
     exit 1
 fi
 
+# scripts/ -> axum-backend/ -> skills/ -> .codebuddy/ -> 项目根
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-ROOT="$(cd "$SKILL_DIR/../.." && pwd)"
+ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 TPL="$SKILL_DIR/assets/templates"
 
 # user_profile -> UserProfile

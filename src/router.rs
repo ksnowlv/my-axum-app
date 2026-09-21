@@ -9,16 +9,19 @@ use tower_http::{
 };
 use tracing::Level;
 
-use crate::{docs, handlers};
+use crate::{docs, features, handlers, state::AppState};
 
 const REQUEST_ID_HEADER: &str = "x-request-id";
 
-pub fn build() -> Router {
+pub fn build(state: AppState) -> Router {
     let request_id_header = axum::http::HeaderName::from_static(REQUEST_ID_HEADER);
+
+    let api = Router::new().nest("/users", features::user::router(state.clone()));
 
     Router::new()
         .route("/", get(handlers::hello))
         .route("/health", get(handlers::health))
+        .nest("/api/v1", api)
         .merge(docs::router())
         .layer(
             ServiceBuilder::new()
@@ -52,4 +55,5 @@ pub fn build() -> Router {
                 // 3. 把 request id 回写到响应头，便于端到端串联
                 .layer(PropagateRequestIdLayer::new(request_id_header)),
         )
+        .with_state(state)
 }

@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Dev (hot reload)" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+    <option name="command" value="watch -q -w src -w Cargo.toml -x run" />
+    <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+    <option name="emulateTerminal" value="true" />
+    <envs>
+      <env name="RUST_LOG" value="debug,tower_http=debug" />
+    </envs>
+    <option name="isRedirectInput" value="false" />
+    <option name="redirectInputPath" value="" />
+    <method v="2" />
+  </configuration>
+</component>

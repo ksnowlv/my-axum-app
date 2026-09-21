@@ -1,0 +1,4 @@
+# 本地开发：文件变更后自动重新编译并重启
+# 首次使用前需安装：cargo install cargo-watch
+[alias]
+dev = "watch -c -q -w src -w Cargo.toml -x run"

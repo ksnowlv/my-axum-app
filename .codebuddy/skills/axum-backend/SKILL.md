@@ -38,6 +38,7 @@ Rust edition 为 2024。新增依赖时保持最小可用，避免引入与上�
 | tracing 初始化、span、字段、敏感信息脱敏 | `references/logging-tracing.md` |
 | 配置项、环境变量、多环境加载 | `references/config-env.md` |
 | 集成测试、OpenAPI 文档生成 | `references/testing-openapi.md` |
+| 本地热重载、调试技巧、常见故障 | `references/dev-workflow.md` |
 
 ## 目录结构（强制）
 
@@ -105,3 +106,5 @@ router → handler → service → repository → model
 
 - `scripts/new_feature.sh <feature>`：按模板生成 `features/<feature>/` 全套文件与迁移 SQL 骨架。
 - `scripts/check.sh`：串行执行 fmt / clippy / test 的提交前自检。
+
+项目根目录下的 `scripts/dev.sh` 提供热重载；`.cargo/config.toml` 中的别名 `cargo dev` 是其快捷方式。用法与排障见 `references/dev-workflow.md`。

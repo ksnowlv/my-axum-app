@@ -70,6 +70,7 @@ async fn main() {
 async fn hello() -> &'static str {
     tracing::info!("handling hello request");
     "Hello, World!"
+
 }
 
 async fn health() -> &'static str {
